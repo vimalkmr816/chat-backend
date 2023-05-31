@@ -14,7 +14,7 @@ const server = createServer()
 const db = process.env.DB_URI?.replace("<PASSWORD>", process.env.DB_PASS ?? "")
 
 if (db !== undefined) {
-	mongoose.connect(db).then(con => {
+	mongoose.connect(db).then(() => {
 		console.log("DB connection successfull")
 	}).catch(err => {
 		console.log(err)

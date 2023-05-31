@@ -1,5 +1,5 @@
-import bcrypt from "bcryptjs"
-import mongoose, { Document, Schema } from "mongoose"
+import bcrypt                         from "bcryptjs";
+import mongoose, { Document, Schema } from "mongoose";
 // Define interface for the document
 export interface UserType extends Document {
   firstName: string
@@ -12,59 +12,61 @@ export interface UserType extends Document {
   passwordResetExpires: Date
   createdAt: Date
   updatedAt: Date
-  matchPassword: (candidatePassword: string, userPassword: string) => Promise<boolean>
+  verified: boolean
+  matchPassword: ( candidatePassword: string, userPassword: string ) => Promise<boolean>
 }
 
-const userSchema: Schema<UserType> = new mongoose.Schema({
-	firstName: {
-		type: String,
-		required: [true, "FirstName is required"]
+const userSchema: Schema<UserType> = new mongoose.Schema ( {
+	firstName : {
+		type     : String,
+		required : [ true, "FirstName is required" ]
 	},
-	lastName: {
-		type: String,
-		required: [true, "LastName is required"]
+	lastName : {
+		type     : String,
+		required : [ true, "LastName is required" ]
 	},
-	avatar: {
-		type: String
+	avatar : {
+		type : String
 	},
-	email: {
-		type: String,
-		required: [true, "Email is required"],
-		validate: {
-			validator: (email: string) => {
-				return /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.exec(String(email).toLowerCase())
-			},
-			message: (props: { value: string }) => {
-				return `Email ${props.value} is invalid`
-			}
+	email : {
+		type     : String,
+		required : [ true, "Email is required" ],
+		validate : {
+			validator : ( email: string ) => /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/.exec ( String ( email ).toLowerCase () ),
+			message   : ( props: { value: string } ) => `Email ${ props.value } is invalid`
 		}
 	},
-	password: {
-		type: String
+	password : {
+		type : String
 	},
-	passwordChangedAt: {
-		type: Date
+	passwordChangedAt : {
+		type : Date
 	},
-	passwordResetToken: {
-		type: String
+	passwordResetToken : {
+		type : String
 	},
-	passwordResetExpires: {
-		type: Date
+	passwordResetExpires : {
+		type : Date
 	},
-	createdAt: {
-		type: Date
+	createdAt : {
+		type : Date
 	},
-	updatedAt: {
-		type: Date
+	updatedAt : {
+		type : Date
+	},
+	verified : {
+		type    : Boolean,
+		default : false
 	}
-})
+} );
 
 userSchema.methods.matchPassword = async (
 	candidatePassword: string,
 	userPassword: string
-) => { 
-	const isValid =await bcrypt.compare(candidatePassword, userPassword)
-	return isValid
-}
+) => {
+	const isValid = await bcrypt.compare ( candidatePassword, userPassword );
 
-export default mongoose.model<UserType>("User", userSchema)
+	return isValid;
+};
+
+export default mongoose.model<UserType> ( "User", userSchema );
