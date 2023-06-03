@@ -1,11 +1,12 @@
-export const filterObj = ( obj: Response["body"], ...allowedFields: Array<string> ) => {
-    type StringToObject<T extends string[]> = {
-    [K in T[number]]: string;
-    };
+export const filterObj = <T extends Record<string, unknown>>( obj: T, ...allowedFields: Array<keyof T> ): Partial<T> => {
+	const newObj: Partial<T> = {};
 
-    const newObj: StringToObject<string[]> = {};
+	obj &&
+		Object.keys ( obj ).forEach ( el => {
+			if ( allowedFields.includes ( el as keyof T ) ) {
+				newObj[el as keyof T] = obj[el] as T[keyof T];
+			}
+		} );
 
-    if ( obj ) Object.keys ( obj ).forEach ( el => {
-    	if ( allowedFields.includes ( el ) ) newObj[el] = obj[el];
-    } );
+	return newObj;
 };

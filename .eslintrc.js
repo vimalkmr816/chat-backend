@@ -145,7 +145,7 @@ module.exports = {
 			allowIndentationTabs : true
 		} ],
 		"object-property-newline" : [ "error", {
-			"allowAllPropertiesOnSameLine" : true
+			"allowAllPropertiesOnSameLine" : false
 		} ],
 		"object-curly-newline" : [ "error", {
 			"consistent" : true
