@@ -1,2 +1,6 @@
 node_modules
 distsendgrid.env
+.env
+nodemon.json
+/sendgrid.env
+env.d.ts
